@@ -2,7 +2,7 @@
 List<string> ukoly = new List<string>();
 
 Console.WriteLine("ŮKOLNÍČEK :D");
-Console.WriteLine("Příkazy: pridat | vypsat | konec");
+Console.WriteLine("Příkazy: pridat | vypsat | smazat | konec");
 
 while (true)
 {
@@ -42,6 +42,28 @@ while (true)
 
                 Console.WriteLine($"{i + 1}. {ukoly[i]}");
             }
+        }
+    }
+    else if (prikaz == "smazat")
+    {
+        if (ukoly.Count == 0)
+        {
+            Console.WriteLine("Nemáš co smazat je to prázdný.");
+            continue;
+        }
+        Console.Write("Napiš číslo úkolu, který chceš smazat: ");
+        string vstupCislo = Console.ReadLine();
+        
+        int.TryParse(vstupCislo, out int cislo);
+        
+        if (cislo >= 1 && cislo <= ukoly.Count)
+        {
+            ukoly.RemoveAt(cislo - 1);
+            Console.WriteLine("Úkol smazán.");
+        }
+        else
+        {
+            Console.WriteLine("Neplatné číslo úkolu.");
         }
     }
     
