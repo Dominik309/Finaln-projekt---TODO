@@ -2,7 +2,7 @@
 List<string> ukoly = new List<string>();
 
 Console.WriteLine("ŮKOLNÍČEK :D");
-Console.WriteLine("Příkazy: pridat | vypsat | smazat | konec");
+Console.WriteLine("Aby ti to vypsalo příkazy napiš help.");
 
 while (true)
 {
@@ -17,6 +17,16 @@ while (true)
         break; 
     }
     
+    else if (prikaz == "help")
+    {
+        Console.WriteLine("--- PŘÍKAZY ---");
+        Console.WriteLine("  pridat    - Přidat nový úkol");
+        Console.WriteLine("  vypsat    - Vypsat všechny úkoly");
+        Console.WriteLine("  done      - Označit úkol jako hotový");
+        Console.WriteLine("  smazat    - Smazat úkol podle ID");
+        Console.WriteLine("  help      - Ukázat tuto nápovědu");
+        Console.WriteLine("  konec     - Ukončit program");
+    }
  
     else if (prikaz == "pridat")
     {
@@ -44,6 +54,29 @@ while (true)
             }
         }
     }
+    
+    else if (prikaz == "done")
+    {
+        if (ukoly.Count == 0)
+        {
+            Console.WriteLine("Nemáš tam nic co bys mohl označit.");
+            continue;
+        }
+        Console.Write("Napiš ID úkolu, který je hotový: ");
+        string vstupCislo = Console.ReadLine() ?? "";
+        int.TryParse(vstupCislo, out int id);
+
+        if (id >= 1 && id <= ukoly.Count)
+        {
+            ukoly[id - 1].IsCompleted = true;
+            Console.WriteLine("Úkol byl označen jako hotový!");
+        }
+        else
+        {
+            Console.WriteLine($"Chyba: Úkol s ID '{vstupCislo}' neexistuje!");
+        }
+    }
+    
     else if (prikaz == "smazat")
     {
         if (ukoly.Count == 0)
