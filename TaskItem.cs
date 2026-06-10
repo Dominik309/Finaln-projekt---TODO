@@ -1,6 +1,7 @@
 
 class TaskItem
 {
+    public int Id { get; set; }
     public string Nazev { get; set; }
     public string Popis { get; set; }
     public int Priorita { get; set; }   

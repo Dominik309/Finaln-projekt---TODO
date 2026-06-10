@@ -1,6 +1,8 @@
 ﻿Console.Clear();
-List<string> ukoly = new List<string>();
-List<bool> splnene = new List<bool>(); 
+List<TaskItem> ukoly = UkladaniUkolu.Nacist();
+int dalsiId = 1;
+if (ukoly.Count > 0)
+    dalsiId = ukoly[ukoly.Count - 1].Id + 1;
 
 Console.WriteLine("ŮKOLNÍČEK :D");
 Console.WriteLine("Napiš help aby ti to vypsalo příkazy.");
@@ -31,8 +33,16 @@ while (true)
     {
         Console.Write("Napiš text úkolu: ");
         string novyUkol = Console.ReadLine();
-        ukoly.Add(novyUkol);
-        splnene.Add(false); 
+
+        Console.Write("Napiš popis úkolu: ");
+        string popis = Console.ReadLine();
+
+        Console.Write("Priorita (1 = nizka, 2 = stredni, 3 = vysoka): ");
+        int priorita = int.Parse(Console.ReadLine());
+
+        ukoly.Add(new TaskItem( novyUkol, popis, priorita));
+        dalsiId++;
+        UkladaniUkolu.Ulozit(ukoly);
         Console.WriteLine("Úkol byl úspěšně přidán!");
     }
 
@@ -47,10 +57,10 @@ while (true)
             Console.WriteLine("   MOJE ÚKOLY   ");
             for (int i = 0; i < ukoly.Count; i++)
             {
-                if (splnene[i] == true)
-                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i]}");
+                if (ukoly[i].Hotovy == true)
+                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
                 else
-                    Console.WriteLine($"{i + 1}. [       ] {ukoly[i]}");
+                    Console.WriteLine($"{i + 1}. [NESPLĚNO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
             }
         }
     }
@@ -66,10 +76,10 @@ while (true)
             Console.WriteLine("   MOJE ÚKOLY   ");
             for (int i = 0; i < ukoly.Count; i++)
             {
-                if (splnene[i] == true)
-                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i]}");
+                if (ukoly[i].Hotovy == true)
+                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
                 else
-                    Console.WriteLine($"{i + 1}. [NESPLNĚNO] {ukoly[i]}");
+                    Console.WriteLine($"{i + 1}. [NESPLNĚNO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
             }
 
             Console.Write("Zadej číslo úkolu který chceš označit jako splněný: ");
@@ -79,8 +89,9 @@ while (true)
                 Console.WriteLine("Tento úkol neexistuje.");
             else
             {
-                splnene[cislo - 1] = true;
-                Console.WriteLine("Úkol je splňený splněný.");
+                ukoly[cislo - 1].Hotovy = true;
+                UkladaniUkolu.Ulozit(ukoly);
+                Console.WriteLine("Úkol je splněný.");
             }
         }
     }
@@ -96,10 +107,10 @@ while (true)
             Console.WriteLine("   MOJE ÚKOLY   ");
             for (int i = 0; i < ukoly.Count; i++)
             {
-                if (splnene[i] == true)
-                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i]}");
+                if (ukoly[i].Hotovy == true)
+                    Console.WriteLine($"{i + 1}. [HOTOVO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
                 else
-                    Console.WriteLine($"{i + 1}. [       ] {ukoly[i]}");
+                    Console.WriteLine($"{i + 1}. [NESPLNĚNO] {ukoly[i].Nazev} (priorita: {ukoly[i].Priorita})");
             }
 
             Console.Write("Zadej číslo úkolu který chceš smazat: ");
@@ -110,12 +121,11 @@ while (true)
             else
             {
                 ukoly.RemoveAt(cislo - 1);
-                splnene.RemoveAt(cislo - 1);
+                UkladaniUkolu.Ulozit(ukoly);
                 Console.WriteLine("Úkol byl smazán.");
             }
         }
     }
-
     else
     {
         Console.WriteLine("Špatně ani příkazy psát neumíš. Napiš: help, pridat, vypsat, smazat, done nebo konec");
