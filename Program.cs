@@ -71,7 +71,7 @@ while (true)
                 dalsiId++; // zvysime id pro pristi ukol
                 UkladaniUkolu.Ulozit(ukoly); // ulozime do souboru
                 Console.WriteLine("Úkol byl úspěšně přidán!");
-            }
+            } 
         }
     }
 
